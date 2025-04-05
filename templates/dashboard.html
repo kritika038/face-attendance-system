@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .controls {
+            display: flex;
+            justify-content: start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .controls input {
+            padding: 8px;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+    <script>
+        function onDateChange() {
+            const date = document.getElementById("date").value;
+            const search = document.getElementById("search").value;
+            window.location.href = `/dashboard?date=${date}&search=${search}`;
+        }
+        function onSearch() {
+            const date = document.getElementById("date").value;
+            const search = document.getElementById("search").value;
+            window.location.href = `/dashboard?date=${date}&search=${search}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>📊 Attendance Dashboard</h1>
+    <div class="controls">
+        <input type="date" id="date" name="date" value="{{ selected_date }}" onchange="onDateChange()">
+        <input type="text" id="search" name="search" placeholder="Name or Enrollment" onkeydown="if(event.key === 'Enter') onSearch()">
+    </div>
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+    {% if records %}
+        <table>
+            <tr>
+                <th>Enrollment</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.enrollment }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
